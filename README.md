@@ -2,7 +2,7 @@
 
 **The evolution of [Cooked](https://github.com/iprajwalsingh7/cooked). Now roasting more than just your music taste.**
 
-🔴 **[Project is live at cooked-v2.vercel.app](https://cooked-v2.vercel.app)**
+🔴 **Project is live [here](https://cooked-v2.vercel.app).**
 
 Cooked V2 is a unified platform that uses Google Gemini AI to ruthlessly analyze and roast your digital existence across **Spotify**, **GitHub**, and **Reddit**.
 
@@ -22,11 +22,17 @@ This version is a complete rewrite and expansion of the original Spotify-only ap
 
 ## 📸 Screenshots
 
-![Landing Page](screenshots/landing.png)
-*The new multi-platform hub.*
-
-![Roast Result](screenshots/roast.png)
-*A ruthless roast in action.*
+<p align="center">
+  <img src="screenshots/landing.png" width="45%" alt="Main Hub" />
+  <img src="screenshots/spotify_landing.png" width="45%" alt="Spotify Landing" />
+</p>
+<p align="center">
+  <img src="screenshots/github_landing.png" width="45%" alt="GitHub Landing" />
+  <img src="screenshots/github_roast.png" width="45%" alt="GitHub Roast Result" />
+</p>
+<p align="center">
+  <img src="screenshots/reddit_landing.png" width="45%" alt="Reddit Landing" />
+</p>
 
 ## ✨ Features
 
