@@ -2,8 +2,8 @@ import './globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Cooked - Spotify Roaster',
-    description: 'Get roasted based on your questionable music taste.',
+    title: 'Cooked V2 - The Ultimate Roast App',
+    description: 'Ruthlessly roast your Spotify, GitHub, and Reddit existence with AI.',
 };
 
 import { Analytics } from "@vercel/analytics/react"
