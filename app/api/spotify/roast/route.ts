@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
         }
 
         const genAI = new GoogleGenerativeAI(geminiApiKey);
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite-preview-02-05' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
         const prompt = `
       You are a toxic, elitist music critic. Your job is to completely destroy this user's ego based on their Spotify history.

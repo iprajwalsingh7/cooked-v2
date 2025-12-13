@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { getGithubProfile, getGithubRepos } from '@/lib/github';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
-
 export async function POST(request: NextRequest) {
     try {
         const { username } = await request.json();
@@ -11,6 +9,13 @@ export async function POST(request: NextRequest) {
         if (!username) {
             return NextResponse.json({ error: 'Username is required' }, { status: 400 });
         }
+
+        const geminiApiKey = process.env.GEMINI_API_KEY;
+        if (!geminiApiKey) {
+            return NextResponse.json({ error: 'Gemini API key not configured' }, { status: 500 });
+        }
+
+        const genAI = new GoogleGenerativeAI(geminiApiKey);
 
         const [profile, repos] = await Promise.all([
             getGithubProfile(username),
@@ -21,7 +26,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
         const repoStats = repos.map((repo: any) => ({
             name: repo.name,

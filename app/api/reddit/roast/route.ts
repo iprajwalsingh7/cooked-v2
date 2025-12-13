@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { getRedditData } from '@/lib/reddit';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
-
 export async function POST(request: NextRequest) {
     try {
         const { username } = await request.json();
@@ -12,13 +10,20 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Username is required' }, { status: 400 });
         }
 
+        const geminiApiKey = process.env.GEMINI_API_KEY;
+        if (!geminiApiKey) {
+            return NextResponse.json({ error: 'Gemini API key not configured' }, { status: 500 });
+        }
+        
+        const genAI = new GoogleGenerativeAI(geminiApiKey);
+
         const data = await getRedditData(username);
 
         if (!data || !data.about) {
             return NextResponse.json({ error: 'User not found or shadowbanned' }, { status: 404 });
         }
 
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
         const comments = data.history
             .filter((item: any) => item.body)
