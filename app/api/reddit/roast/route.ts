@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'User not found or shadowbanned' }, { status: 404 });
         }
 
-        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
         const comments = data.history
             .filter((item: any) => item.body)
