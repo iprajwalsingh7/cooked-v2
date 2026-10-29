@@ -1,70 +1,356 @@
-import Link from 'next/link';
-import { Music, Github, MessageSquare } from 'lucide-react';
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import {
+  ArrowDown,
+  ArrowRight,
+  ArrowUpRight,
+  Check,
+  Flame,
+  Github,
+  Headphones,
+  MessageCircle,
+  Sparkles,
+} from "lucide-react";
+import { Footer, Header, HeatArt } from "./components/Brand";
+
+const platforms = [
+  {
+    id: "spotify",
+    name: "Spotify",
+    description:
+      "The guilty pleasures. The breakup playlist. That one artist you refuse to outgrow.",
+    label: "FOR THE REPEAT OFFENDERS",
+    icon: Headphones,
+    color: "green",
+    detail: "Connect your account",
+    sample:
+      "Your playlist has three moods: staring out of a rainy window, pretending you’re in a music video, and skipping the song you added to seem interesting.",
+  },
+  {
+    id: "github",
+    name: "GitHub",
+    description:
+      "Abandoned side projects and “final-final” commits. Your contribution graph has a story.",
+    label: "FOR THE SHIP-IT TOMORROWS",
+    icon: Github,
+    color: "lilac",
+    detail: "Just your username",
+    sample:
+      "Twelve repositories. Eleven README files that say “coming soon.” Your most consistent contribution is giving future-you more work.",
+  },
+  {
+    id: "reddit",
+    name: "Reddit",
+    description:
+      "Your hot takes, niche obsessions, and very impressive collection of imaginary points.",
+    label: "FOR THE COMMENT SECTION",
+    icon: MessageCircle,
+    color: "orange",
+    detail: "Just your username",
+    sample:
+      "You don’t browse Reddit. You clock in. Somewhere there’s a comment with two upvotes that you’re still checking like a stock portfolio.",
+  },
+];
 
 export default function Home() {
-    return (
-        <main className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden bg-[#050505] text-white p-6">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-red-900/10 via-transparent to-transparent opacity-50" />
+  const [sample, setSample] = useState(1);
+  const active = platforms[sample];
 
-            <div className="container relative z-10 max-w-5xl mx-auto text-center">
-                <h1 className="text-6xl md:text-8xl font-bold tracking-tighter mb-6">
-                    COOKED<span className="text-red-600">.</span>
-                </h1>
-                <p className="text-xl text-gray-400 mb-16 max-w-2xl mx-auto">
-                    The ultimate roasting platform. Select your victim and let us humble you.
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Spotify Card */}
-                    <Link href="/spotify" className="group relative p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 hover:-translate-y-2">
-                        <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl" />
-                        <div className="relative z-10 flex flex-col items-center">
-                            <div className="w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center mb-6 text-green-500 group-hover:scale-110 transition-transform">
-                                <svg role="img" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
-                                    <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141 4.32-1.32 9.84-.6 13.561 1.621.42.3.539.84.24 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
-                                </svg>
-                            </div>
-                            <h2 className="text-2xl font-bold mb-2">Spotify Roast</h2>
-                            <p className="text-sm text-gray-400">Judge your terrible music taste and obsession with sad songs.</p>
-                        </div>
-                    </Link>
-
-                    {/* GitHub Card */}
-                    <Link href="/github" className="group relative p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 hover:-translate-y-2">
-                        <div className="absolute inset-0 bg-gradient-to-br from-gray-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl" />
-                        <div className="relative z-10 flex flex-col items-center">
-                            <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform">
-                                <svg role="img" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
-                                    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-                                </svg>
-                            </div>
-                            <h2 className="text-2xl font-bold mb-2">GitHub Roast</h2>
-                            <p className="text-sm text-gray-400">Expose your spaghetti code, empty repos, and lack of commits.</p>
-                        </div>
-                    </Link>
-
-                    {/* Reddit Card */}
-                    <Link href="/reddit" className="group relative p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 hover:-translate-y-2">
-                        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl" />
-                        <div className="relative z-10 flex flex-col items-center">
-                            <div className="w-16 h-16 bg-orange-500/20 rounded-2xl flex items-center justify-center mb-6 text-orange-500 group-hover:scale-110 transition-transform">
-                                <svg role="img" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
-                                    <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.249-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z" />
-                                </svg>
-                            </div>
-                            <h2 className="text-2xl font-bold mb-2">Reddit Roast</h2>
-                            <p className="text-sm text-gray-400">Analyze your karma farming and cringe takes in echo chambers.</p>
-                        </div>
-                    </Link>
+  return (
+    <>
+      <Header />
+      <main id="main-content">
+        <section className="hero shell">
+          <div className="hero-copy entrance">
+            <div className="eyebrow">
+              <span className="status-dot" /> YOUR INTERNET EGO ENDS HERE
+            </div>
+            <h1>
+              A little less ego.
+              <br />A lot more <span className="serif-word">heat.</span>
+            </h1>
+            <p>
+              You are what you stream, ship, and post.
+              <br className="desktop-break" /> Let AI connect the dots. And hurt
+              your feelings. A little.
+            </p>
+            <div className="hero-actions">
+              <Link href="#menu" className="button button-dark">
+                Find your roast <ArrowUpRight size={18} />
+              </Link>
+              <Link href="#sample" className="text-link">
+                Get a taste <ArrowRight size={16} />
+              </Link>
+            </div>
+            <div className="hero-proof">
+              <span className="tiny-faces">
+                <i>↗</i>
+                <i>♪</i>
+                <i>⌘</i>
+              </span>
+              <span>Three ways in. No ego out.</span>
+            </div>
+          </div>
+          <HeatArt />
+          <div className="hero-bottom">
+            <span>PERSONALIZED ROASTS. QUESTIONABLE COMFORT.</span>
+            <Link href="#menu">
+              SCROLL TO SIMMER <ArrowDown size={14} />
+            </Link>
+          </div>
+        </section>
+        <div className="flavor-strip">
+          <div className="shell">
+            <span>100% personal</span>
+            <Sparkles size={17} />
+            <span>Zero sugarcoating</span>
+            <Sparkles size={17} />
+            <span>Made from your digital footprint</span>
+            <Sparkles size={17} />
+            <span>Best served with a sense of humor</span>
+          </div>
+        </div>
+        <section id="menu" className="menu-section shell">
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">01 / PICK YOUR POISON</span>
+              <h2>
+                What’s on the <span className="serif-word">menu?</span>
+              </h2>
+            </div>
+            <p>
+              Different platforms. Same questionable you.
+              <br />
+              Choose where we start digging.
+            </p>
+          </div>
+          <div className="platform-grid">
+            {platforms.map((platform) => (
+              <Link
+                href={`/${platform.id}`}
+                key={platform.id}
+                className={`platform-card card-${platform.color}`}
+              >
+                <div className="card-top">
+                  <span className="platform-icon">
+                    <platform.icon size={25} />
+                  </span>
+                  <ArrowUpRight className="card-arrow" size={24} />
                 </div>
-
+                <div
+                  className={`platform-art platform-art-${platform.id}`}
+                  aria-hidden="true"
+                >
+                  {platform.id === "spotify" ? (
+                    <div className="vinyl">
+                      <span>c.</span>
+                    </div>
+                  ) : platform.id === "github" ? (
+                    <div className="code-window">
+                      <div>
+                        <i />
+                        <i />
+                        <i />
+                      </div>
+                      <span>git commit -m</span>
+                      <strong>
+                        "it works
+                        <br />
+                        on my machine"
+                      </strong>
+                      <b>↵</b>
+                    </div>
+                  ) : (
+                    <div className="comment-art">
+                      <span>unpopular opinion:</span>
+                      <strong>
+                        you’re the
+                        <br />
+                        popular problem.
+                      </strong>
+                      <small>↑ 1 &nbsp; ↓ &nbsp;&nbsp; ↩ Reply</small>
+                    </div>
+                  )}
+                </div>
+                <div className="card-copy">
+                  <span className="micro-label">{platform.label}</span>
+                  <h3>{platform.name}</h3>
+                  <p>{platform.description}</p>
+                  <div className="card-foot">
+                    <span>{platform.detail}</span>
+                    <span className="circle-arrow">
+                      <ArrowRight size={16} />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <p className="menu-note">
+            <Check size={14} /> GitHub and Reddit use public profiles. Spotify
+            requires account access.
+          </p>
+        </section>
+        <section id="sample" className="sample-section">
+          <div className="shell sample-grid">
+            <div className="sample-copy">
+              <span className="eyebrow">A COMPLIMENT? IN THIS ECONOMY?</span>
+              <h2>
+                Lovingly crafted.
+                <br />
+                <span className="serif-word">Lightly devastating.</span>
+              </h2>
+              <p>
+                No random insult generator. Your habits are the ingredients. AI
+                just turns up the heat.
+              </p>
+              <div className="sample-tabs" aria-label="Example roasts">
+                {platforms.map((platform, index) => (
+                  <button
+                    key={platform.id}
+                    aria-pressed={sample === index}
+                    aria-controls="sample-roast"
+                    onClick={() => setSample(index)}
+                    className={sample === index ? "active" : ""}
+                  >
+                    <platform.icon size={16} />
+                    {platform.name}
+                  </button>
+                ))}
+              </div>
             </div>
-
-            <div className="mt-12 md:mt-0 md:absolute md:bottom-4 md:right-6 text-xs text-gray-600 font-medium tracking-wide opacity-50 hover:opacity-100 transition-opacity">
-                <a href="https://iprajwalsingh7.dev" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-                    crafted by prajwal
-                </a>
+            <div
+              className="sample-verdict"
+              id="sample-roast"
+              aria-live="polite"
+            >
+              <div className="verdict-top">
+                <span>
+                  <Flame size={15} /> FRESH OFF THE GRILL
+                </span>
+                <span>EXAMPLE ROAST</span>
+              </div>
+              <blockquote key={active.id}>“{active.sample}”</blockquote>
+              <div className="verdict-bottom">
+                <span className={`sample-platform ${active.color}`}>
+                  <active.icon size={16} />
+                  {active.name} roast
+                </span>
+                <span>Well done. Literally. ↗</span>
+              </div>
             </div>
-        </main>
-    );
+          </div>
+        </section>
+        <section id="how-it-works" className="how-section shell">
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">02 / THE RECIPE</span>
+              <h2>
+                From profile to <span className="serif-word">humble pie.</span>
+              </h2>
+            </div>
+            <p>
+              Very little effort.
+              <br />
+              Very personal consequences.
+            </p>
+          </div>
+          <div className="steps-grid">
+            {[
+              {
+                number: "01",
+                title: "Choose your arena.",
+                text: "Music taste, code habits, or comment history. Everyone has a weak spot.",
+              },
+              {
+                number: "02",
+                title: "Give us the ingredients.",
+                text: "Enter a public username, or connect your Spotify. We take it from there.",
+              },
+              {
+                number: "03",
+                title: "Take the heat.",
+                text: "Get a roast made from your actual habits. Laugh, copy it, send it to the group chat.",
+              },
+            ].map((step) => (
+              <div className="step" key={step.number}>
+                <span>{step.number}</span>
+                <h3>{step.title}</h3>
+                <p>{step.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+        <section className="faq-section shell">
+          <div>
+            <span className="eyebrow">BEFORE YOU GET COOKED</span>
+            <h2>
+              A few burning
+              <br />
+              <span className="serif-word">questions.</span>
+            </h2>
+          </div>
+          <div className="faq-list">
+            <details>
+              <summary>
+                Is this actually personalized?<span>+</span>
+              </summary>
+              <p>
+                Yes. We use your public profile and activity, or the Spotify
+                listening data you authorize, to generate your roast. The
+                examples above are illustrative.
+              </p>
+            </details>
+            <details>
+              <summary>
+                Can anyone connect Spotify?<span>+</span>
+              </summary>
+              <p>
+                Spotify development apps require approved accounts. If yours is
+                not on the allowlist, try a GitHub or Reddit roast instead.
+              </p>
+            </details>
+            <details>
+              <summary>
+                What happens to my data?<span>+</span>
+              </summary>
+              <p>
+                Profile details are sent to Gemini to write your roast. Cooked
+                does not save roast history in a database. Spotify access stays
+                in an HTTP-only session cookie. Hosting and AI providers apply
+                their own data policies.
+              </p>
+            </details>
+            <details>
+              <summary>
+                Is it supposed to be mean?<span>+</span>
+              </summary>
+              <p>
+                It’s comedy about your online habits. If a roast misses the
+                mark, leave it on the plate. Your internet profile is only a
+                small part of you.
+              </p>
+            </details>
+          </div>
+        </section>
+        <section className="closing-section shell">
+          <div className="closing-inner">
+            <span className="eyebrow">YOU’VE SCROLLED THIS FAR.</span>
+            <h2>
+              Still feeling <span className="serif-word">confident?</span>
+            </h2>
+            <Link href="#menu" className="button button-dark">
+              Let’s change that <ArrowUpRight size={18} />
+            </Link>
+            <span className="closing-spark" aria-hidden="true">
+              ✳
+            </span>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
 }
