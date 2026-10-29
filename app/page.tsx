@@ -121,7 +121,7 @@ export default function Home() {
               </h2>
             </div>
             <p>
-              Different platforms. Same questionable you.
+              Different platforms. Same questionable you.{" "}
               <br />
               Choose where we start digging.
             </p>
@@ -252,7 +252,7 @@ export default function Home() {
               </h2>
             </div>
             <p>
-              Very little effort.
+              Very little effort.{" "}
               <br />
               Very personal consequences.
             </p>
@@ -287,7 +287,7 @@ export default function Home() {
           <div>
             <span className="eyebrow">BEFORE YOU GET COOKED</span>
             <h2>
-              A few burning
+              A few burning{" "}
               <br />
               <span className="serif-word">questions.</span>
             </h2>
