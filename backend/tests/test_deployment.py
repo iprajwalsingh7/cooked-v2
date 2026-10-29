@@ -42,6 +42,13 @@ class DeploymentSettingsTests(unittest.TestCase):
 
 
 class VercelEntrypointTests(unittest.TestCase):
+    def test_root_requirements_are_self_contained_and_match_backend(self):
+        root = Path(__file__).resolve().parents[2]
+        root_requirements = (root / "requirements.txt").read_text().strip()
+        backend_requirements = (root / "backend/requirements.txt").read_text().strip()
+        self.assertEqual(root_requirements, backend_requirements)
+        self.assertNotIn("-r ", root_requirements)
+
     @classmethod
     def setUpClass(cls):
         sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
