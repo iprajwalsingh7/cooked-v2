@@ -1,32 +1,31 @@
-import './globals.css';
-import type { Metadata } from 'next';
+import "@fontsource/bebas-neue/latin-400.css";
+import "@fontsource-variable/space-grotesk";
+import "./globals.css";
+import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
-    title: 'Cooked V2 - The Ultimate Roast App',
-    description: 'Ruthlessly roast your Spotify, GitHub, and Reddit existence with AI.',
+  title: "Cooked — Your digital life. Exposed.",
+  description:
+    "Personalized AI roasts for your Spotify taste, GitHub habits, and Reddit takes. Three ways in. No ego out.",
 };
 
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
-
 export default function RootLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-    return (
-        <html lang="en">
-            <head>
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-                <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet" />
-            </head>
-            <body>
-                {children}
-
-                <Analytics />
-                <SpeedInsights />
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en" data-scroll-behavior="smooth">
+      <body>
+        <a className="skip-link" href="#main-content">
+          Skip to content
+        </a>
+        {children}
+        <Analytics />
+        <SpeedInsights />
+      </body>
+    </html>
+  );
 }
