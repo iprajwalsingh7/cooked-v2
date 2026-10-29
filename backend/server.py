@@ -5,7 +5,7 @@ import re
 import secrets
 from dataclasses import dataclass
 from typing import Annotated
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlsplit
 
 import httpx
 from dotenv import load_dotenv
@@ -35,7 +35,15 @@ class Settings:
 
 
 def get_settings():
-    frontend = os.getenv("FRONTEND_URL", "http://localhost:3000").rstrip("/")
+    callback = os.getenv("SPOTIFY_REDIRECT_URI", "")
+    callback_url = urlsplit(callback)
+    callback_origin = f"{callback_url.scheme}://{callback_url.netloc}" if callback_url.scheme in {"https", "http"} and callback_url.netloc else ""
+    vercel_host = os.getenv("VERCEL_PROJECT_PRODUCTION_URL") or os.getenv("VERCEL_URL")
+    frontend = (os.getenv("FRONTEND_URL") or callback_origin or (f"https://{vercel_host}" if vercel_host else "")).rstrip("/")
+    if not frontend:
+        if os.getenv("VERCEL") == "1":
+            raise HTTPException(503, "Configure the production site URL before connecting Spotify.")
+        frontend = "http://localhost:3000"
     return Settings(
         frontend_url=frontend,
         gemini_key=os.getenv("GEMINI_API_KEY", ""),
@@ -43,7 +51,7 @@ def get_settings():
         github_token=os.getenv("GITHUB_TOKEN", ""),
         spotify_id=os.getenv("SPOTIFY_CLIENT_ID", ""),
         spotify_secret=os.getenv("SPOTIFY_CLIENT_SECRET", ""),
-        spotify_redirect=os.getenv("SPOTIFY_REDIRECT_URI", f"{frontend}/api/auth/callback"),
+        spotify_redirect=callback or f"{frontend}/api/auth/callback",
     )
 
 
