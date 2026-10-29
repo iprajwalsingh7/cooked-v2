@@ -26,4 +26,7 @@ jobs:
           node-version: "22"
           cache: npm
       - run: npm ci
+      - run: node --test tests/routing.test.cjs
       - run: npm run build
+        env:
+          VERCEL: "1"

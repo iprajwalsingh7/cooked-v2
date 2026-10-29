@@ -51,22 +51,25 @@ Never put credentials in NEXT_PUBLIC_ variables. Gemini availability and free qu
 
 ## Deploy on Vercel
 
-Create two Vercel projects from this repository:
+The Next.js frontend and FastAPI backend deploy together in the existing Vercel project.
 
-1. Backend: set Root Directory to backend, use FastAPI detection, and configure the backend variables above.
-2. Frontend: use the repository root with the Next.js preset, and set API_BACKEND_URL to the backend deployment origin.
-3. Set backend FRONTEND_URL to the frontend production origin and SPOTIFY_REDIRECT_URI to that origin plus /api/auth/callback.
-4. Register the exact same callback URL in the Spotify developer dashboard.
-5. Redeploy after changing configuration. API_BACKEND_URL is read during the frontend build.
-6. Keep the backend reachable by the frontend proxy; Vercel authentication protection must not block public production API requests.
+1. Keep the project Root Directory at the repository root and the framework preset at Next.js.
+2. The root api/index.py exports the Python app; requirements.txt installs its backend dependencies. Vercel routes /api/* to that function, without a localhost or external backend proxy.
+3. Configure GEMINI_API_KEY, SPOTIFY_CLIENT_ID, and SPOTIFY_CLIENT_SECRET in this project's Vercel environment settings. GITHUB_TOKEN remains optional.
+4. Set SPOTIFY_REDIRECT_URI to https://cooked-v2.vercel.app/api/auth/callback and register that exact URL in the Spotify developer dashboard. Use your actual production domain if it differs.
+5. FRONTEND_URL is optional when the Spotify callback or Vercel production URL is available. An explicit FRONTEND_URL takes precedence.
+6. Redeploy after environment changes. API_BACKEND_URL is used for local or self-hosted installations only and is ignored on Vercel.
 
-The frontend proxies API requests so cookies remain on the frontend origin. Spotify tokens are HTTP-only cookies, never URL parameters. OAuth state is cryptographically generated and checked against a short-lived cookie. Sessions expire after Spotify's access-token lifetime; reconnect when prompted.
+A production rewrite to 127.0.0.1 causes Vercel's DNS_HOSTNAME_RESOLVED_PRIVATE error and prevents requests from reaching Spotify or Gemini. The bundled function removes that dependency.
+
+API requests stay on the frontend origin so OAuth cookies remain on the same domain. Spotify tokens are HTTP-only cookies, never URL parameters. OAuth state is cryptographically generated and checked against a short-lived cookie. Sessions expire after Spotify's access-token lifetime; reconnect when prompted.
 
 Vercel Hobby supports personal, non-commercial use within plan limits. This repository does not provision hosting accounts or configure secrets automatically.
 
 ## Checks
 
 ```text
+node --test tests/routing.test.cjs
 npm run build
 cd backend
 .venv\Scripts\python.exe -m unittest discover -s tests -v

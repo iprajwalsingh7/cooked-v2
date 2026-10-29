@@ -1,0 +1,9 @@
+{
+  "framework": "nextjs",
+  "functions": {
+    "api/index.py": {
+      "maxDuration": 60,
+      "excludeFiles": "{node_modules/**,.next/**,screenshots/**,backend/.venv/**,backend/tests/**}"
+    }
+  }
+}
