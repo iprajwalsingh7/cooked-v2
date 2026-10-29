@@ -120,15 +120,15 @@ export default function RoastResult({ platform }: { platform: Platform }) {
               <h1>
                 {loading ? (
                   <>
-                    Let it <span className="serif-word">cook.</span>
+                    Let it <span className="highlight-word">cook.</span>
                   </>
                 ) : error ? (
                   <>
-                    Not quite <span className="serif-word">done.</span>
+                    Not quite <span className="highlight-word">done.</span>
                   </>
                 ) : (
                   <>
-                    You’ve been <span className="serif-word">cooked.</span>
+                    You’ve been <span className="highlight-word">cooked.</span>
                   </>
                 )}
               </h1>
@@ -206,7 +206,7 @@ export default function RoastResult({ platform }: { platform: Platform }) {
                   <RefreshCw size={15} />
                   Another serving
                 </button>
-                <Link className="text-link" href="/#menu">
+                <Link className="text-link" href="/#platforms">
                   Try another platform
                   <ArrowUpRight size={15} />
                 </Link>

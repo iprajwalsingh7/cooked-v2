@@ -1,62 +1,88 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowDown,
   ArrowRight,
   ArrowUpRight,
+  AudioLines,
   Check,
   Flame,
   Github,
   Headphones,
   MessageCircle,
+  ShieldCheck,
   Sparkles,
 } from "lucide-react";
-import { Footer, Header, HeatArt } from "./components/Brand";
+import { Footer, Header } from "./components/Brand";
 
 const platforms = [
   {
-    id: "spotify",
-    name: "Spotify",
-    description:
-      "The guilty pleasures. The breakup playlist. That one artist you refuse to outgrow.",
-    label: "FOR THE REPEAT OFFENDERS",
-    icon: Headphones,
-    color: "green",
-    detail: "Connect your account",
-    sample:
-      "Your playlist has three moods: staring out of a rainy window, pretending you’re in a music video, and skipping the song you added to seem interesting.",
-  },
-  {
     id: "github",
     name: "GitHub",
-    description:
-      "Abandoned side projects and “final-final” commits. Your contribution graph has a story.",
-    label: "FOR THE SHIP-IT TOMORROWS",
     icon: Github,
-    color: "lilac",
-    detail: "Just your username",
-    sample:
-      "Twelve repositories. Eleven README files that say “coming soon.” Your most consistent contribution is giving future-you more work.",
+    tag: "FOR THE SERIAL SIDE-PROJECT STARTER",
+    title: "ALL FORK.\nNO FINISH.",
+    description:
+      "The abandoned repos. The tutorial clones. The README doing all the work.",
+    color: "violet",
+    metric: "COMMITMENT ISSUES",
+    example:
+      "Twelve repos. Eleven say “coming soon.” Your most consistent contribution is giving future-you more work.",
+    placeholder: "Your GitHub username",
+  },
+  {
+    id: "spotify",
+    name: "Spotify",
+    icon: Headphones,
+    tag: "FOR THE EMOTIONALLY CURATED",
+    title: "GOOD AUDIO.\nBAD DECISIONS.",
+    description:
+      "The breakup playlist. The guilty pleasures. The artist you made your entire personality.",
+    color: "lime",
+    metric: "SKIP-WORTHY BEHAVIOR",
+    example:
+      "You call it an eclectic taste. We call it three breakup playlists in a trench coat pretending to be a personality.",
+    placeholder: "Connect your listening history",
   },
   {
     id: "reddit",
     name: "Reddit",
-    description:
-      "Your hot takes, niche obsessions, and very impressive collection of imaginary points.",
-    label: "FOR THE COMMENT SECTION",
     icon: MessageCircle,
-    color: "orange",
-    detail: "Just your username",
-    sample:
-      "You don’t browse Reddit. You clock in. Somewhere there’s a comment with two upvotes that you’re still checking like a stock portfolio.",
+    tag: "FOR THE CHRONICALLY ONLINE",
+    title: "BIG KARMA.\nSMALL WORLD.",
+    description:
+      "Your hot takes, niche obsessions, and collection of very imaginary internet points.",
+    color: "coral",
+    metric: "TERMINALLY IN THE COMMENTS",
+    example:
+      "You don’t browse Reddit. You clock in. Somewhere there’s a comment with two upvotes you’re checking like a stock portfolio.",
+    placeholder: "Your Reddit username",
   },
 ];
 
 export default function Home() {
-  const [sample, setSample] = useState(1);
-  const active = platforms[sample];
+  const [source, setSource] = useState(0);
+  const [username, setUsername] = useState("");
+  const router = useRouter();
+  const active = platforms[source];
+
+  function submit(event: FormEvent) {
+    event.preventDefault();
+    if (active.id === "spotify") {
+      router.push("/spotify");
+      return;
+    }
+    const clean = username
+      .trim()
+      .replace(active.id === "reddit" ? /^u\// : /^@/, "");
+    if (clean)
+      router.push(
+        "/" + active.id + "/roast?username=" + encodeURIComponent(clean),
+      );
+  }
 
   return (
     <>
@@ -65,180 +91,269 @@ export default function Home() {
         <section className="hero shell">
           <div className="hero-copy entrance">
             <div className="eyebrow">
-              <span className="status-dot" /> YOUR INTERNET EGO ENDS HERE
+              <span className="status-dot" /> AI-POWERED. EGO-DESTROYING.
             </div>
             <h1>
-              A little less ego.
-              <br />A lot more <span className="serif-word">heat.</span>
+              YOUR DIGITAL
+              <br />
+              LIFE.<span className="headline-accent"> EXPOSED.</span>
             </h1>
             <p>
-              You are what you stream, ship, and post.
-              <br className="desktop-break" /> Let AI connect the dots. And hurt
-              your feelings. A little.
+              Your playlists have patterns. Your repos have secrets.
+              <br className="desktop-break" /> Your comment history has… a lot
+              to answer for.
             </p>
             <div className="hero-actions">
-              <Link href="#menu" className="button button-dark">
-                Find your roast <ArrowUpRight size={18} />
+              <Link href="#roast-console" className="button button-dark">
+                COOK ME
+                <Flame size={18} />
               </Link>
-              <Link href="#sample" className="text-link">
-                Get a taste <ArrowRight size={16} />
+              <Link href="#platforms" className="text-link">
+                Explore the lineup
+                <ArrowDown size={16} />
               </Link>
             </div>
             <div className="hero-proof">
-              <span className="tiny-faces">
-                <i>↗</i>
-                <i>♪</i>
-                <i>⌘</i>
+              <span>
+                <Check size={13} />
+                Actually personal
               </span>
-              <span>Three ways in. No ego out.</span>
+              <span>
+                <Check size={13} />
+                Zero sugarcoating
+              </span>
             </div>
           </div>
-          <HeatArt />
+          <div
+            id="roast-console"
+            className={"roast-console accent-" + active.color}
+          >
+            <div className="console-header">
+              <span>
+                <span className="status-dot" /> THE ROAST CONSOLE
+              </span>
+              <span>VOL. 02</span>
+            </div>
+            <div className="console-body">
+              <div className="console-label">01 / CHOOSE YOUR SOURCE</div>
+              <div className="source-switch" aria-label="Roast platform">
+                {platforms.map((platform, index) => (
+                  <button
+                    key={platform.id}
+                    aria-pressed={source === index}
+                    onClick={() => {
+                      setSource(index);
+                      setUsername("");
+                    }}
+                    className={source === index ? "selected" : ""}
+                  >
+                    <platform.icon size={18} />
+                    {platform.name}
+                  </button>
+                ))}
+              </div>
+              <div className="console-example" key={active.id}>
+                <div className="example-tag">
+                  <Sparkles size={12} /> EXAMPLE TRANSMISSION
+                </div>
+                <p>“{active.example}”</p>
+                <div className="example-bottom">
+                  <span>NO EGO WAS HARMED. YET.</span>
+                  <AudioLines size={22} />
+                </div>
+              </div>
+              <form onSubmit={submit} className="console-form">
+                <label htmlFor="roast-username">
+                  02 /{" "}
+                  {active.id === "spotify"
+                    ? "CONNECT YOUR ACCOUNT"
+                    : "IDENTIFY THE SUSPECT"}
+                </label>
+                {active.id !== "spotify" && (
+                  <div className="console-input">
+                    <span>{active.id === "reddit" ? "u/" : "@"}</span>
+                    <input
+                      id="roast-username"
+                      aria-label={active.placeholder}
+                      value={username}
+                      onChange={(event) => setUsername(event.target.value)}
+                      placeholder="username"
+                      autoCapitalize="none"
+                      autoComplete="off"
+                      spellCheck={false}
+                      required
+                      maxLength={active.id === "github" ? 39 : 22}
+                      pattern={
+                        active.id === "github"
+                          ? "@?[A-Za-z0-9][A-Za-z0-9-]*"
+                          : "(u/)?[A-Za-z0-9_-]{3,20}"
+                      }
+                    />
+                  </div>
+                )}
+                <button
+                  className="console-submit"
+                  type="submit"
+                  disabled={active.id !== "spotify" && !username.trim()}
+                >
+                  {active.id === "spotify"
+                    ? "CONNECT SPOTIFY"
+                    : "GENERATE MY ROAST"}
+                  <ArrowUpRight size={18} />
+                </button>
+              </form>
+              <div className="console-footnote">
+                <ShieldCheck size={12} />
+                {active.id === "spotify"
+                  ? "Spotify access is limited to approved accounts."
+                  : "Public profile only. No sign-in. No hiding."}
+              </div>
+            </div>
+            <div className="console-footer">
+              <span>POWERED BY GEMINI</span>
+              <span>BRUTALLY PERSONAL ↗</span>
+            </div>
+          </div>
           <div className="hero-bottom">
-            <span>PERSONALIZED ROASTS. QUESTIONABLE COMFORT.</span>
-            <Link href="#menu">
-              SCROLL TO SIMMER <ArrowDown size={14} />
-            </Link>
+            <span>SCROLL FOR MORE QUESTIONABLE DECISIONS</span>
+            <span>SPOTIFY / GITHUB / REDDIT</span>
           </div>
         </section>
-        <div className="flavor-strip">
-          <div className="shell">
-            <span>100% personal</span>
-            <Sparkles size={17} />
-            <span>Zero sugarcoating</span>
-            <Sparkles size={17} />
-            <span>Made from your digital footprint</span>
-            <Sparkles size={17} />
-            <span>Best served with a sense of humor</span>
+        <div className="ticker" aria-hidden="true">
+          <div>
+            {Array.from({ length: 4 }, (_, i) => (
+              <span key={i}>
+                YOUR DATA. OUR PUNCHLINE.
+                <Sparkles size={20} /> NO FILTER. NO MERCY.
+                <Flame size={20} />
+              </span>
+            ))}
           </div>
         </div>
-        <section id="menu" className="menu-section shell">
+        <section id="platforms" className="lineup-section shell">
           <div className="section-heading">
             <div>
-              <span className="eyebrow">01 / PICK YOUR POISON</span>
+              <span className="eyebrow">01 / THE LINEUP</span>
               <h2>
-                What’s on the <span className="serif-word">menu?</span>
+                THREE PLATFORMS.
+                <br />
+                <span>NOWHERE TO HIDE.</span>
               </h2>
             </div>
             <p>
-              Different platforms. Same questionable you.{" "}
+              Pick a side of your internet personality.{" "}
               <br />
-              Choose where we start digging.
+              We’ll find something to talk about.
             </p>
           </div>
-          <div className="platform-grid">
-            {platforms.map((platform) => (
+          <div className="lineup-grid">
+            {platforms.map((platform, index) => (
               <Link
-                href={`/${platform.id}`}
+                href={"/" + platform.id}
                 key={platform.id}
-                className={`platform-card card-${platform.color}`}
+                className={"lineup-card lineup-" + platform.color}
               >
-                <div className="card-top">
+                <div className="lineup-top">
                   <span className="platform-icon">
                     <platform.icon size={25} />
                   </span>
-                  <ArrowUpRight className="card-arrow" size={24} />
+                  <span>0{index + 1}</span>
                 </div>
                 <div
-                  className={`platform-art platform-art-${platform.id}`}
+                  className={"lineup-graphic graphic-" + platform.id}
                   aria-hidden="true"
                 >
-                  {platform.id === "spotify" ? (
-                    <div className="vinyl">
-                      <span>c.</span>
-                    </div>
-                  ) : platform.id === "github" ? (
-                    <div className="code-window">
-                      <div>
-                        <i />
-                        <i />
-                        <i />
-                      </div>
-                      <span>git commit -m</span>
+                  {platform.id === "github" ? (
+                    <>
+                      <span className="terminal-command">$ git status</span>
                       <strong>
-                        "it works
+                        nothing to
                         <br />
-                        on my machine"
+                        commit.
                       </strong>
-                      <b>↵</b>
+                      <small>much to discuss.</small>
+                      <span className="terminal-cursor">▌</span>
+                    </>
+                  ) : platform.id === "spotify" ? (
+                    <div className="equalizer">
+                      {Array.from({ length: 13 }, (_, i) => (
+                        <i
+                          key={i}
+                          style={{
+                            height: 25 + ((i * 23) % 75) + "%",
+                            animationDelay: -i * 0.14 + "s",
+                          }}
+                        />
+                      ))}
                     </div>
                   ) : (
-                    <div className="comment-art">
-                      <span>unpopular opinion:</span>
-                      <strong>
-                        you’re the
-                        <br />
-                        popular problem.
-                      </strong>
-                      <small>↑ 1 &nbsp; ↓ &nbsp;&nbsp; ↩ Reply</small>
-                    </div>
+                    <>
+                      <div className="karma-arrows">
+                        ↑<span>404</span>↓
+                      </div>
+                      <small>GRASS NOT FOUND</small>
+                    </>
                   )}
                 </div>
-                <div className="card-copy">
-                  <span className="micro-label">{platform.label}</span>
-                  <h3>{platform.name}</h3>
+                <div className="lineup-content">
+                  <span className="micro-label">
+                    {platform.name.toUpperCase()} ROAST
+                  </span>
+                  <h3>
+                    {platform.title.split("\n").map((line, i) => (
+                      <span key={i}>{line}</span>
+                    ))}
+                  </h3>
                   <p>{platform.description}</p>
-                  <div className="card-foot">
-                    <span>{platform.detail}</span>
-                    <span className="circle-arrow">
-                      <ArrowRight size={16} />
+                  <div className="lineup-bottom">
+                    <span>
+                      {platform.id === "spotify"
+                        ? "CONNECT ACCOUNT"
+                        : "ENTER USERNAME"}
                     </span>
+                    <ArrowUpRight size={23} />
                   </div>
                 </div>
               </Link>
             ))}
           </div>
-          <p className="menu-note">
-            <Check size={14} /> GitHub and Reddit use public profiles. Spotify
-            requires account access.
-          </p>
         </section>
-        <section id="sample" className="sample-section">
-          <div className="shell sample-grid">
-            <div className="sample-copy">
-              <span className="eyebrow">A COMPLIMENT? IN THIS ECONOMY?</span>
+        <section className="manifesto-section">
+          <div className="shell manifesto-grid">
+            <div>
+              <span className="eyebrow">
+                A PERSONAL ATTACK. WITH PERSONAL DATA.
+              </span>
               <h2>
-                Lovingly crafted.
+                WE BRING
                 <br />
-                <span className="serif-word">Lightly devastating.</span>
+                THE <span>RECEIPTS.</span>
               </h2>
-              <p>
-                No random insult generator. Your habits are the ingredients. AI
-                just turns up the heat.
-              </p>
-              <div className="sample-tabs" aria-label="Example roasts">
-                {platforms.map((platform, index) => (
-                  <button
-                    key={platform.id}
-                    aria-pressed={sample === index}
-                    aria-controls="sample-roast"
-                    onClick={() => setSample(index)}
-                    className={sample === index ? "active" : ""}
-                  >
-                    <platform.icon size={16} />
-                    {platform.name}
-                  </button>
-                ))}
-              </div>
             </div>
-            <div
-              className="sample-verdict"
-              id="sample-roast"
-              aria-live="polite"
-            >
-              <div className="verdict-top">
+            <div className="manifesto-copy">
+              <p>
+                A random insult? Too easy.
+                <br />A roast about your seventeenth unfinished side project?{" "}
+                <strong>Now we’re talking.</strong>
+              </p>
+              <p>
+                Cooked reads the patterns in your public profile or authorized
+                listening history. Gemini connects the dots. Your ego handles
+                the rest.
+              </p>
+              <div className="manifesto-tags">
                 <span>
-                  <Flame size={15} /> FRESH OFF THE GRILL
+                  <Check size={13} />
+                  Grounded in your habits
                 </span>
-                <span>EXAMPLE ROAST</span>
-              </div>
-              <blockquote key={active.id}>“{active.sample}”</blockquote>
-              <div className="verdict-bottom">
-                <span className={`sample-platform ${active.color}`}>
-                  <active.icon size={16} />
-                  {active.name} roast
+                <span>
+                  <Check size={13} />
+                  Freshly generated
                 </span>
-                <span>Well done. Literally. ↗</span>
+                <span>
+                  <Check size={13} />
+                  Ready for the group chat
+                </span>
               </div>
             </div>
           </div>
@@ -246,37 +361,38 @@ export default function Home() {
         <section id="how-it-works" className="how-section shell">
           <div className="section-heading">
             <div>
-              <span className="eyebrow">02 / THE RECIPE</span>
+              <span className="eyebrow">02 / THE PROCESS</span>
               <h2>
-                From profile to <span className="serif-word">humble pie.</span>
+                LOW EFFORT.
+                <br />
+                <span>HIGHLY PERSONAL.</span>
               </h2>
             </div>
-            <p>
-              Very little effort.{" "}
-              <br />
-              Very personal consequences.
-            </p>
+            <Link href="#roast-console" className="text-link">
+              Let’s get into it
+              <ArrowUpRight size={16} />
+            </Link>
           </div>
           <div className="steps-grid">
             {[
               {
-                number: "01",
-                title: "Choose your arena.",
-                text: "Music taste, code habits, or comment history. Everyone has a weak spot.",
+                n: "01",
+                title: "PICK A PLATFORM",
+                text: "Your code, your music, or your takes. Everyone has a weak spot.",
               },
               {
-                number: "02",
-                title: "Give us the ingredients.",
-                text: "Enter a public username, or connect your Spotify. We take it from there.",
+                n: "02",
+                title: "DROP YOUR HANDLE",
+                text: "Use a public username, or connect your Spotify. That’s your part done.",
               },
               {
-                number: "03",
-                title: "Take the heat.",
-                text: "Get a roast made from your actual habits. Laugh, copy it, send it to the group chat.",
+                n: "03",
+                title: "TAKE IT PERSONALLY",
+                text: "Read the verdict. Copy it. Send it to the group chat. Pretend you’re fine.",
               },
             ].map((step) => (
-              <div className="step" key={step.number}>
-                <span>{step.number}</span>
+              <div className="step" key={step.n}>
+                <span>{step.n}</span>
                 <h3>{step.title}</h3>
                 <p>{step.text}</p>
               </div>
@@ -285,31 +401,32 @@ export default function Home() {
         </section>
         <section className="faq-section shell">
           <div>
-            <span className="eyebrow">BEFORE YOU GET COOKED</span>
+            <span className="eyebrow">03 / BEFORE THE DAMAGE</span>
             <h2>
-              A few burning{" "}
+              GOOD{" "}
               <br />
-              <span className="serif-word">questions.</span>
+              <span>QUESTIONS.</span>
             </h2>
           </div>
           <div className="faq-list">
             <details>
               <summary>
-                Is this actually personalized?<span>+</span>
+                Is this actually about me?<span>+</span>
               </summary>
               <p>
-                Yes. We use your public profile and activity, or the Spotify
-                listening data you authorize, to generate your roast. The
-                examples above are illustrative.
+                Yes. We use public profile details or the Spotify listening data
+                you authorize. The console preview is an illustrative example;
+                your generated roast uses your own data.
               </p>
             </details>
             <details>
               <summary>
-                Can anyone connect Spotify?<span>+</span>
+                Do I need to log in?<span>+</span>
               </summary>
               <p>
-                Spotify development apps require approved accounts. If yours is
-                not on the allowlist, try a GitHub or Reddit roast instead.
+                No login for GitHub or Reddit. Just a public username. Spotify
+                needs you to authorize access, and development apps are limited
+                to approved accounts.
               </p>
             </details>
             <details>
@@ -317,36 +434,42 @@ export default function Home() {
                 What happens to my data?<span>+</span>
               </summary>
               <p>
-                Profile details are sent to Gemini to write your roast. Cooked
-                does not save roast history in a database. Spotify access stays
-                in an HTTP-only session cookie. Hosting and AI providers apply
-                their own data policies.
+                A limited profile summary is sent to Gemini. Cooked does not
+                save roast history in a database. Spotify access stays in an
+                HTTP-only cookie. Hosting and AI providers apply their own data
+                policies.
               </p>
             </details>
             <details>
               <summary>
-                Is it supposed to be mean?<span>+</span>
+                What if the roast is wrong?<span>+</span>
               </summary>
               <p>
-                It’s comedy about your online habits. If a roast misses the
-                mark, leave it on the plate. Your internet profile is only a
-                small part of you.
+                It’s a joke about a small slice of your online habits, not a
+                verdict on you. AI can miss the mark. Take the funny parts and
+                leave the rest.
               </p>
             </details>
           </div>
         </section>
         <section className="closing-section shell">
           <div className="closing-inner">
-            <span className="eyebrow">YOU’VE SCROLLED THIS FAR.</span>
+            <span className="eyebrow">YOU KNOW YOU’RE CURIOUS.</span>
             <h2>
-              Still feeling <span className="serif-word">confident?</span>
+              GO ON.
+              <br />
+              MAKE IT <span>PERSONAL.</span>
             </h2>
-            <Link href="#menu" className="button button-dark">
-              Let’s change that <ArrowUpRight size={18} />
+            <Link href="#roast-console" className="button button-dark">
+              I CAN TAKE IT
+              <ArrowUpRight size={19} />
             </Link>
-            <span className="closing-spark" aria-hidden="true">
-              ✳
-            </span>
+            <Flame
+              className="closing-flame"
+              size={230}
+              strokeWidth={1.2}
+              aria-hidden="true"
+            />
           </div>
         </section>
       </main>

@@ -11,7 +11,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import Link from "next/link";
-import { Footer, Header, HeatArt } from "./Brand";
+import { Footer, Header, SignalArt } from "./Brand";
 
 export const platformInfo = {
   github: {
@@ -84,8 +84,8 @@ export default function PlatformPage({ platform }: { platform: Platform }) {
         id="main-content"
         className={"platform-page shell theme-" + info.color}
       >
-        <Link className="back-link" href="/#menu">
-          <ArrowLeft size={15} /> Back to the menu
+        <Link className="back-link" href="/#platforms">
+          <ArrowLeft size={15} /> Back to the lineup
         </Link>
         <div className="platform-page-grid">
           <section className="platform-intro entrance">
@@ -96,7 +96,7 @@ export default function PlatformPage({ platform }: { platform: Platform }) {
             <h1>
               {info.title}
               <br />
-              <span className="serif-word">{info.emphasis}</span>
+              <span className="highlight-word">{info.emphasis}</span>
             </h1>
             <p className="platform-description">{info.description}</p>
             {error && (
@@ -165,9 +165,9 @@ export default function PlatformPage({ platform }: { platform: Platform }) {
             </p>
           </section>
           <div className="platform-side-art">
-            <HeatArt compact />
+            <SignalArt platform={platform} />
             <div className="side-art-caption">
-              <span>ON TODAY’S MENU</span>
+              <span>PROFILE / UNDER REVIEW</span>
               <strong>
                 {platform === "github"
                   ? "Technical debt.\nEmotional interest."
@@ -175,7 +175,7 @@ export default function PlatformPage({ platform }: { platform: Platform }) {
                     ? "Hot takes.\nCold reality."
                     : "Heavy rotation.\nLight judgment."}
               </strong>
-              <span>PREPARED WITH QUESTIONABLE LOVE.</span>
+              <span>NO FILTER. NO SUGARCOATING.</span>
             </div>
           </div>
         </div>
